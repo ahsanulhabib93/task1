@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app1
+  labels:
+    app: app1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app1
+  template:
+    metadata:
+      labels:
+        app: app1
+    spec:
+      volumes:
+      - name: dir
+        hostPath:
+          path: /src
+      imagePullSecrets:
+      - name: my-key
+      containers:
+      - name: app1
+        image: registry.hub.docker.com/ahsanulhabib1993/app1
+        imagePullPolicy: Always
+        volumeMounts:
+        - name: dir
+          mountPath: /src
+        ports:
+          - containerPort: 8000
+      nodeSelector:
+        region: "worker1"
